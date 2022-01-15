@@ -1,7 +1,8 @@
 resource "aws_instance" "web1" {
 
     # Zone dependent AMI id collection from launch instances
-    ami           = "ami-0ed9277fb7eb570c9"
+    ami           = "ami-0ed9277fb7eb570c9" # AMI - Amazon Linux 2
+    #ami           = "ami-04505e74c0741db8d" # AMI - Ubuntu Server 20.04 LTS 
     instance_type = "t2.micro"
 
     # Instance shutdown behaviour 
@@ -19,7 +20,7 @@ resource "aws_instance" "web1" {
 
     # startup script
     # shuts down in one hour 
-    user_data = file("startup.sh")
+    user_data = file("./scripts/startup.sh")
 
     # shutdown by lambda function based on ttl
     # https://gist.github.com/ibrezm1/1550bf2389db47f7acceb17ca6e2dc8d
@@ -28,16 +29,17 @@ resource "aws_instance" "web1" {
         ttl = "120"
     }
 
-    # nginx installation
+    #move scripts folder to ec2 tmp
     provisioner "file" {
-        source = "nginx.sh"
-        destination = "/tmp/nginx.sh"
+        source = "./scripts"
+        destination = "/tmp"
     }
 
     provisioner "remote-exec" {
         inline = [
-            "chmod +x /tmp/nginx.sh",
-            #"sudo /tmp/nginx.sh"
+            "chmod +x /tmp/scripts/*.sh",
+           # "sudo /tmp/scripts/install-docker.sh",
+           # "sudo /tmp/scripts/install-concorse.sh",
         ]
     }
 

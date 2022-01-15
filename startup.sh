@@ -1,1 +1,0 @@
-echo "sudo halt" | at now + 55 minutes
