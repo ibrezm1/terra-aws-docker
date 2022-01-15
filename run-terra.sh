@@ -1,6 +1,6 @@
 file=./virginia-region-key-pair
 if [ ! -e "$file" ]; then
-    ssh-keygen -f virginia-region-key-pair
+    ssh-keygen -f virginia-region-key-pair -b 2048 -t rsa -q -N ""
 fi
 
 terraform init

@@ -1,7 +1,7 @@
 provider "aws" {
  default_tags {
    tags = {
-     Environment = "Test"
+     environment = "test"
      Owner       = "TFProviders"
      Project     = "Test"
    }

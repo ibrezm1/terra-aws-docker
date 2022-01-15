@@ -4,6 +4,10 @@ resource "aws_instance" "web1" {
     ami           = "ami-0ed9277fb7eb570c9"
     instance_type = "t2.micro"
 
+    # Instance shutdown behaviour 
+    # Remember to disable in production 
+    instance_initiated_shutdown_behavior = "terminate"
+
     # VPC
     subnet_id = aws_subnet.prod-subnet-public-1.id
 
@@ -12,6 +16,14 @@ resource "aws_instance" "web1" {
 
     # the Public SSH key
     key_name = aws_key_pair.virginia-region-key-pair.id
+
+    # startup script
+    # shuts down in one hour 
+    user_data = file("startup.sh")
+
+    tags = {
+        ttl = "0"
+    }
 
     # nginx installation
     provisioner "file" {
@@ -22,7 +34,7 @@ resource "aws_instance" "web1" {
     provisioner "remote-exec" {
         inline = [
             "chmod +x /tmp/nginx.sh",
-            "sudo /tmp/nginx.sh"
+            #"sudo /tmp/nginx.sh"
         ]
     }
 
