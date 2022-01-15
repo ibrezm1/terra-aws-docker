@@ -21,8 +21,11 @@ resource "aws_instance" "web1" {
     # shuts down in one hour 
     user_data = file("startup.sh")
 
+    # shutdown by lambda function based on ttl
+    # https://gist.github.com/ibrezm1/1550bf2389db47f7acceb17ca6e2dc8d
+    # https://medium.com/@kaustubhin/stop-ec2-instances-automatically-with-aws-lambda-function-python-98f801e77242?p=7dcee216308
     tags = {
-        ttl = "0"
+        ttl = "120"
     }
 
     # nginx installation
