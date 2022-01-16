@@ -1,8 +1,6 @@
 resource "aws_instance" "web1" {
 
-    # Zone dependent AMI id collection from launch instances
-    ami           = "ami-0ed9277fb7eb570c9" # AMI - Amazon Linux 2
-    #ami           = "ami-04505e74c0741db8d" # AMI - Ubuntu Server 20.04 LTS 
+    ami           = var.AMI["ubuntuserver"] # or use amazonlinux2 for concourse
     instance_type = "t2.micro"
 
     # Instance shutdown behaviour 
@@ -40,6 +38,7 @@ resource "aws_instance" "web1" {
             "chmod +x /tmp/scripts/*.sh",
            # "sudo /tmp/scripts/install-docker.sh",
            # "sudo /tmp/scripts/install-concorse.sh",
+            "sudo /tmp/scripts/install-slackstorm.sh",
         ]
     }
 
